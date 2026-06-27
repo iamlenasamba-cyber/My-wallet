@@ -29,7 +29,7 @@ function creerWallet(array &$wallets, array &$newWallet){
 };
 //choix
 function choix(){
-    $choix=readline('Entrer votre choix:');
+    $choix=(int)trim(readline('Entrer votre choix:'));
     return $choix;
 };
 //trouver client avec code
@@ -53,7 +53,7 @@ function typeTransaction($choix){
 //client inexistant
 function verifierIndex($index){
     if($index==-1){
-        echo "Client inexistant\n";
+        echo "\n**Client inexistant**\n";
         return null;
     }
     return $index;
@@ -63,11 +63,11 @@ function saisirTransaction($choix,array $wallets){
     $newTransaction=['type'=>'','montant'=>0,'indexClient'=>0];
     $newTransaction['type']= typeTransaction($choix);
     $newTransaction['montant']=(int)readline('Entrer le montant de la transaction: ');
-    $code= readline('Entrer votre code secret: ');
+    $code= trim(readline('Entrer votre code secret: '));
     $index= trouverClientParCode($wallets, $code);
     $index=verifierIndex($index);
-    if($index==null){
-        return null;
+    if($index===null){
+        return 'pasTrouve';
     }
     $newTransaction['indexClient']= $index;
     return $newTransaction;
@@ -78,6 +78,7 @@ $transactions[]=$newTransaction;
 };
 //afficher le menu au lancement
 function afficherMenu(){
+    echo "\n**MENU**\n";
     echo "1_Creer un compte\n";
     echo "2_Faire une transaction\n";
     echo "3_lister les transactions\n";
@@ -99,17 +100,20 @@ function choixMenu1($choixMenu,array &$wallets){
 };
 //choix depot ou retrait
 function choixDepotRetrait(){
-    echo "Souhaitez-vous:\n";
+    echo "\n**Souhaitez-vous:**\n";
     echo "1_faire un depot\n";
     echo "2_faire un retrait\n";
 };
 //quand l'utilisateur choisi de faire une transaction
-function choixMenu2($choixMenu,array &$transactions,array $wallets){
+function choixMenu2($choixMenu,array &$transactions,array &$wallets){
     if($choixMenu==2){
     choixDepotRetrait();
      $choix=choix();
      $newTransaction=saisirTransaction($choix,$wallets);
+     if($newTransaction!='pasTrouve'){
      creerTransaction($transactions,$newTransaction);
+     echo "\n**Transaction reuissie!**\n\n";
+     };
     }
 };
 //Choix menu invalide
