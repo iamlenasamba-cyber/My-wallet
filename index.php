@@ -112,12 +112,19 @@ function choixMenu2($choixMenu,array &$transactions,array $wallets){
      creerTransaction($transactions,$newTransaction);
     }
 };
+//Choix menu invalide
+function choixMenuInvalide($choixMenu){
+    if(($choixMenu!=1)&&($choixMenu!=2)&&($choixMenu!=3)&&($choixMenu!=0)){
+            echo "\n**Choix invalide!**\n\n";
+    };
+};
 // decide de quoi afficher
 function redirection(array &$wallets,array &$transactions){
     do{
         $choixMenu=action();
         choixMenu1($choixMenu,$wallets);
         choixMenu2($choixMenu,$transactions,$wallets);
+        choixMenuInvalide($choixMenu);
     }while($choixMenu!=0);
    
 };
