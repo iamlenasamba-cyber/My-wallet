@@ -1,15 +1,17 @@
 <?php 
-
+//DECLARATIONS DES TABLEAUX
 $wallets =[
     0=>['client'=>'lena','code'=>'1234','phone'=>'771143710','solde'=>0],
     1=>['client'=>'khadza','code'=>'2345','phone'=>'711001010','solde'=>0],
     2=>['client'=>'dieyna','code'=>'3456','phone'=>'760007070','solde'=>0]
 ];
 
-$transaction=[
+$transactions=[
     0=>['type'=>'depot','montant'=>'1000','indexClient'=>0],
     1=>['type'=>'retrait','montant'=>'2000','indexClient'=>2],
 ];
+
+//DECLARATION DES FONCTIONS
 
 // saisi du wallet
 function saisirWallet(){
@@ -27,9 +29,6 @@ function creerWallet(array &$wallets, array &$newWallet){
 };
 //choix
 function choix(){
-    echo "Souhaitez-vous:\n";
-    echo "1_Faire un depot \n";
-    echo "2_Faire un retrait \n";
     $choix=readline('Entrer votre choix:');
     return $choix;
 };
@@ -73,6 +72,10 @@ function saisirTransaction($choix,array $wallets){
     $newTransaction['indexClient']= $index;
     return $newTransaction;
 };
+//enregitrer la transaction
+function creerTransaction(&$transactions,$newTransaction){
+$transactions[]=$newTransaction;
+};
 //afficher le menu au lancement
 function afficherMenu(){
     echo "1_Creer un compte\n";
@@ -91,22 +94,37 @@ function choixMenu1($choixMenu,array &$wallets){
     if ($choixMenu==1){
     $newWallet=saisirWallet();
      creerWallet($wallets,$newWallet);
+     echo "\n**compte cree avec succes!**\n\n";
     };
 };
+//choix depot ou retrait
+function choixDepotRetrait(){
+    echo "Souhaitez-vous:\n";
+    echo "1_faire un depot\n";
+    echo "2_faire un retrait\n";
+};
+//quand l'utilisateur choisi de faire une transaction
+function choixMenu2($choixMenu,array &$transactions,array $wallets){
+    if($choixMenu==2){
+    choixDepotRetrait();
+     $choix=choix();
+     $newTransaction=saisirTransaction($choix,$wallets);
+     creerTransaction($transactions,$newTransaction);
+     echo "\n transaction effectué!\n\n";
+    }
+};
 // decide de quoi afficher
-function redirection(array &$wallets){
+function redirection(array &$wallets,array &$transactions){
     do{
         $choixMenu=action();
         choixMenu1($choixMenu,$wallets);
-       
+        choixMenu2($choixMenu,$transactions,$wallets);
     }while($choixMenu!=0);
    
 };
 
-
-redirection($wallets);
-
-
+//APPEL DES FONCTIONS
+redirection($wallets,$transactions);
 
 
 
