@@ -110,7 +110,6 @@ function choixMenu2($choixMenu,array &$transactions,array $wallets){
      $choix=choix();
      $newTransaction=saisirTransaction($choix,$wallets);
      creerTransaction($transactions,$newTransaction);
-     echo "\n transaction effectué!\n\n";
     }
 };
 // decide de quoi afficher
